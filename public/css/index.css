@@ -1,0 +1,29 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: #ffffffe3;
+}
+
+.container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+    margin-top: 100px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+    width: 400px;
+    height: 300px;
+    border-radius: 10px;
+    box-shadow: 3px 3px #1b1b1b;
+    background: #fff;
+    border: 1px solid black;
+}

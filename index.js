@@ -7,6 +7,7 @@ app.set('views', path.join(__dirname, 'views'))
 app.use(express.static(path.join(__dirname, 'public')))
 const router = express.Router()
 const multer = require('multer')
+const port = process.env.PORT || 3000
 // Configuração de armazenamento
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -29,6 +30,6 @@ router.get('/', (req, res) => {
 })
 
 app.use(router)
-app.listen(3000, () => {
-    console.log('server running on port 3000')
+app.listen(port, () => {
+    console.log('server running on port ' + port)
 })

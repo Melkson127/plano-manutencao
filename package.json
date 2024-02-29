@@ -6,6 +6,7 @@
     "multer": "^1.4.5-lts.1"
   },
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "production": "node index.js"
   }
 }

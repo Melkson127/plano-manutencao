@@ -9,7 +9,7 @@ async function extrairDados(path, worksheet) {
 }
 function createIte(predio, planoManutencao, itemCategoryList) {
 
-    let lines = ['C \n command;subGroup;itemCategory;description;alternativeIdentifier;active;CF_equipamento;CF_LOCAL;CF_LOCAL_DO_ITEM;CF_Periodo;CF_TAG;CF_AREA;CF_tipo_eq']
+    let lines = ['command;subGroup;itemCategory;description;alternativeIdentifier;active;CF_equipamento;CF_LOCAL;CF_LOCAL_DO_ITEM;CF_Periodo;CF_TAG;CF_AREA;CF_tipo_eq']
     function getPeriodicidade(periodicidade) {
         if (periodicidade == "Semanal") {
             return "SE"
@@ -44,10 +44,10 @@ function createIte(predio, planoManutencao, itemCategoryList) {
             lines.push(`I;${tipo};${itemCategory};${identificacao};${identifier};1;${tipo};${pavimento};${predio};${periodicidade};${identifier};${pavimento};${tipo}`)
         }
     })
-    return { ite: lines.reduce((val, current) => `${val}\n ${current}`), identifiers: identifiers, tipos: tipos, periodicidades: periodicidades }
+    return { ite: lines.reduce((val, current) => `${val}\n${current}`), identifiers: identifiers, tipos: tipos, periodicidades: periodicidades }
 }
 function createIsa(tipos, identifiers, verificacoes, periodicidades) {
-    let lines = ['C \n command;active;order;section;item']
+    let lines = ['command;active;order;section;item']
     tipos.forEach((value, i, arr) => {
         let section = verificacoes.filter((val, index) => {
             if (index > 1) {
@@ -58,7 +58,7 @@ function createIsa(tipos, identifiers, verificacoes, periodicidades) {
         lines.push(`I;1;1;${section.length > 0 ? section[0][2] : 'section não encontrada reveja a periodicidade'};${identifiers[i]}`)
 
     })
-    return lines.reduce((val, current) => `${val}\n ${current}`)
+    return lines.reduce((val, current) => `${val}\n${current}`)
 }
 module.exports = async function create(req, res, next) {
     try {

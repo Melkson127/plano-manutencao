@@ -2,12 +2,16 @@ const express = require('express')
 const path = require('path')
 const createItens = require('./controllers/planilha')
 const app = express()
+const port = process.env.PORT || 3000
+//configurações view engine
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
 app.use(express.static(path.join(__dirname, 'public')))
+//configurações router
 const router = express.Router()
+app.use(router)
+// configurações upload de arquivos
 const multer = require('multer')
-const port = process.env.PORT || 3000
 // Configuração de armazenamento
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -22,14 +26,14 @@ const storage = multer.diskStorage({
     }
 });
 const upload = multer({ storage })
+//Configurações body e json
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
-app.post('/create', upload.single('plano'), (req, res, next) => createItens(req, res, next))
+//rotas
+router.post('/create', upload.single('plano'), (req, res, next) => createItens(req, res, next))
 router.get('/', (req, res) => {
     res.render(__dirname + '/views/index.ejs')
 })
-
-app.use(router)
 app.listen(port, () => {
     console.log('server running on port ' + port)
 })

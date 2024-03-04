@@ -41,7 +41,7 @@ function createIte(predio, planoManutencao, itemCategoryList) {
             let siglaSubgrupo = tipo.slice(0, 3)
             let identifier = `${siglaPredio}${siglaSubgrupo}${i - 1}_${periodicidade}`
             identifiers.push(identifier)
-            lines.push(`I;${tipo};${itemCategory};${identificacao};${identifier};1;${tipo};${pavimento};${predio};${periodicidade};${identifier};${pavimento};${tipo};`)
+            lines.push(`I;${tipo};${itemCategory};${identificacao};${identifier};1;${tipo};${pavimento};${predio};${periodicidade};${identifier};${pavimento};${tipo}`)
         }
     })
     return { ite: lines.reduce((val, current) => `${val}\n ${current}`), identifiers: identifiers, tipos: tipos, periodicidades: periodicidades }
@@ -61,19 +61,25 @@ function createIsa(tipos, identifiers, verificacoes, periodicidades) {
     return lines.reduce((val, current) => `${val}\n ${current}`)
 }
 module.exports = async function create(req, res, next) {
-    let predio = req.body.predio
-    let arquivo = req.file
-    // console.log(req.file)
-    let planoManutencao = await extrairDados(arquivo.path, 'Inventário Cadastro')
-    let itemCategoryList = await extrairDados("./planilha/Planilha_Completa.xlsx", 'itemCategory')
-    let verificacoes = await extrairDados("./planilha/Planilha_Completa.xlsx", 'Verificações')
+    try {
+        let predio = req.body.predio
+        let arquivo = req.file
+        // console.log(req.file)
+        let planoManutencao = await extrairDados(arquivo.path, 'Inventário Cadastro')
+        let itemCategoryList = await extrairDados("./planilha/Planilha_Completa.xlsx", 'itemCategory')
+        let verificacoes = await extrairDados("./planilha/Planilha_Completa.xlsx", 'Verificações')
 
-    // console.log(req.body)
-    let ite = createIte(predio, planoManutencao, itemCategoryList)
-    let isa = createIsa(ite.tipos, ite.identifiers, verificacoes, ite.periodicidades)
-    await fs.rm(arquivo.path, (err) => {
-        console.log(err)
-    })
-    res.render('pronto', { ite: ite.ite, isa: isa })
-    next()
+        // console.log(req.body)
+        let ite = createIte(predio, planoManutencao, itemCategoryList)
+        let isa = createIsa(ite.tipos, ite.identifiers, verificacoes, ite.periodicidades)
+        await fs.rm(arquivo.path, (err) => {
+            console.log(err)
+        })
+        res.render('pronto', { ite: ite.ite, isa: isa })
+        next()
+    } catch (err) {
+        console.log('Exception:' + err)
+        res.render('index')
+    }
+
 }

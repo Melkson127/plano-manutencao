@@ -27,21 +27,24 @@ function createIte(predio, planoManutencao, itemCategoryList) {
             let pavimento = row[3]
             let periodicidade = row[4]
             let itemCategory = ''
-            periodicidade = getPeriodicidade(periodicidade)
-            periodicidades.push(periodicidade)
-            itemCategoryList.forEach((rowCategory, index, array) => {
-                if (index > 1) {
-                    if (tipo == rowCategory[1]) {
-                        itemCategory = rowCategory[2]
+            if (identificacao && tipo && pavimento && periodicidade) {
+                periodicidade = getPeriodicidade(periodicidade)
+                periodicidades.push(periodicidade)
+                itemCategoryList.forEach((rowCategory, index, array) => {
+                    if (index > 1) {
+                        if (tipo == rowCategory[1]) {
+                            itemCategory = rowCategory[2]
+                        }
                     }
-                }
-            })
-            let siglaPredio = predio.replace(/ /g, '')
-                .slice(0, 3).toUpperCase()
-            let siglaSubgrupo = tipo.slice(0, 3)
-            let identifier = `${siglaPredio}${siglaSubgrupo}${i - 1}_${periodicidade}`
-            identifiers.push(identifier)
-            lines.push(`I;${tipo};${itemCategory};${identificacao};${identifier};1;${tipo};${pavimento};${predio};${periodicidade};${identifier};${pavimento};${tipo}`)
+                })
+                let siglaPredio = predio.replace(/ /g, '')
+                    .slice(0, 3).toUpperCase()
+                let siglaSubgrupo = tipo.slice(0, 3)
+
+                let identifier = `${siglaPredio}${siglaSubgrupo}${i - 1}_${periodicidade}`
+                identifiers.push(identifier)
+                lines.push(`I;${tipo};${itemCategory};${identificacao};${identifier};1;${tipo};${pavimento};${predio};${periodicidade};${identifier};${pavimento};${tipo}`)
+            }
         }
     })
     return { ite: lines.reduce((val, current) => `${val}\n${current}`), identifiers: identifiers, tipos: tipos, periodicidades: periodicidades }

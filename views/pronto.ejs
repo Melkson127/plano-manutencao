@@ -9,6 +9,10 @@
 </head>
 
 <body>
+    <% avisos.forEach((aviso) => { %>
+        <div class="aviso"> ERRO:<%= aviso %> </div>
+        <br>
+     <% }); %> 
     <textarea name="ite" id="" cols="30" rows="10">
         <%- ite %>
     </textarea>

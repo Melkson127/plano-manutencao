@@ -19,6 +19,7 @@ function createIte(predio, planoManutencao, itemCategoryList) {
     let tipos = []
     let identifiers = []
     let periodicidades = []
+    let avisos = []
     planoManutencao.forEach((row, i, arr) => {
         if (i > 1) {
             let identificacao = row[1]
@@ -44,10 +45,12 @@ function createIte(predio, planoManutencao, itemCategoryList) {
                 let identifier = `${siglaPredio}${siglaSubgrupo}${i - 1}_${periodicidade}`
                 identifiers.push(identifier)
                 lines.push(`I;${tipo};${itemCategory};${identificacao};${identifier};1;${tipo};${pavimento};${predio};${periodicidade};${identifier};${pavimento};${tipo}`)
+            }else{
+                avisos.push(`A linha ${i} tem colunas não preenchidas`)
             }
         }
     })
-    return { ite: lines.reduce((val, current) => `${val}\n${current}`), identifiers: identifiers, tipos: tipos, periodicidades: periodicidades }
+    return { ite: lines.reduce((val, current) => `${val}\n${current}`), identifiers: identifiers, tipos: tipos, periodicidades: periodicidades, avisos: avisos }
 }
 function createIsa(tipos, identifiers, verificacoes, periodicidades) {
     let lines = ['command;active;order;section;item']
@@ -78,7 +81,7 @@ module.exports = async function create(req, res, next) {
         await fs.rm(arquivo.path, (err) => {
             console.log(err)
         })
-        res.render('pronto', { ite: ite.ite, isa: isa })
+        res.render('pronto', { ite: ite.ite, isa: isa, avisos: ite.avisos })
         next()
     } catch (err) {
         console.log('Exception:' + err)

@@ -1,7 +1,7 @@
 body {
     margin: 0;
     padding: 0;
-    background: #ffffffe3;
+    background: #505050e3;
 }
 
 .container {
@@ -13,7 +13,17 @@ body {
     justify-content: center;
     margin-top: 100px;
 }
-
+.aviso{
+    position: relative;
+    display: flex;
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background: rgba(255, 0, 0, 0.849);
+    color: white;
+    height: 30px;
+}
 .form {
     display: flex;
     flex-direction: column;

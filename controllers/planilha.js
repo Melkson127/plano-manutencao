@@ -23,11 +23,11 @@ function createIte(predio, planoManutencao, itemCategoryList) {
         if (i > 1) {
             let identificacao = row[1]
             let tipo = row[2]
-            tipos.push(tipo)
             let pavimento = row[3]
             let periodicidade = row[4]
             let itemCategory = ''
             if (identificacao && tipo && pavimento && periodicidade) {
+                tipos.push(tipo)
                 periodicidade = getPeriodicidade(periodicidade)
                 periodicidades.push(periodicidade)
                 itemCategoryList.forEach((rowCategory, index, array) => {
